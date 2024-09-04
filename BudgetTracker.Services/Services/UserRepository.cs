@@ -22,7 +22,7 @@ namespace BudgetTracker.Services.Services
         /// </summary>
         /// <param name="budgetTrackerDBContext">The database context to be used in the repository</param>
         /// <param name="logger">The logger to be used in the repository</param>
-        public UserRepository(BudgetTrackerDBContext budgetTrackerDBContext, ILogger<UserRepository> logger) 
+        public UserRepository(BudgetTrackerDBContext budgetTrackerDBContext, ILogger<UserRepository> logger)
         {
             dbContext = budgetTrackerDBContext;
             this.logger = logger;
@@ -45,7 +45,7 @@ namespace BudgetTracker.Services.Services
             }
             catch (Exception ex)
             {
-                logger.LogError($"Exception thrown in {nameof(AddUser)}",ex);
+                logger.LogError($"Exception thrown in {nameof(AddUser)}", ex);
             }
 
             return false;
@@ -60,11 +60,11 @@ namespace BudgetTracker.Services.Services
         {
             try
             {
-                if (string.IsNullOrEmpty(username)||string.IsNullOrEmpty(email)) throw new ArgumentNullException(nameof(username));
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email)) throw new ArgumentNullException(nameof(username));
                 logger.LogInformation($"Checking user exists {username + email}");
-                return await dbContext.Users.AnyAsync(x=>x.UserEmail == email && x.UserName == username);
+                return await dbContext.Users.AnyAsync(x => x.UserEmail == email && x.UserName == username);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError($"Exception thrown in {nameof(CheckUserExists)}", ex);
             }

@@ -37,7 +37,7 @@ namespace BudgetTracker.Entites
         /// <summary>
         /// Gets or sets the updated date for the user
         /// </summary>
-        public DateTime UpdatedDate { get; set;} = DateTime.Now;
+        public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Hashes the password string
