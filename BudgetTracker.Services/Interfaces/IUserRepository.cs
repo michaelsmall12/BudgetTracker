@@ -29,8 +29,15 @@ namespace BudgetTracker.Services.Interfaces
         /// Checks if a user exists
         /// </summary>
         /// <param name="username">The username to check for</param>
-        /// <param name="email">The email to check for</param>
         /// <returns>bool indicating if the account exists</returns>
-        Task<bool> CheckUserExists(string username, string email);
+        Task<bool> CheckUserExists(string username);
+
+        /// <summary>
+        /// Attempts to log a user into the application
+        /// </summary>
+        /// <param name="userName">The username to try and log in</param>
+        /// <param name="password">The password to try log in</param>
+        /// <returns>bool indicating if the login was successfull</returns>
+        Task<bool> Login(string userName, string password);
     }
 }
