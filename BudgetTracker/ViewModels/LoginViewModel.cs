@@ -93,7 +93,7 @@ namespace BudgetTracker.ViewModels
         private async Task Setup()
         {
             Logger.Information("Navigating to the Sign Up View");
-            RegionManager.RequestNavigate("ContentRegion", "SignUpView");
+            RegionManager.RequestNavigate("ContentRegion", "SignupView");
         }
 
         /// <summary>

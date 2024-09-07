@@ -17,21 +17,21 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".7*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" MinWidth="300"/>
             <ColumnDefinition Width=".7*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height=".6*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MinHeight="200" />
             <RowDefinition Height=".6*"/>
         </Grid.RowDefinitions>
-        <md:Card Grid.Row="1" Grid.Column="1">
+        <md:Card Grid.Row="1" Grid.Column="1" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -39,7 +39,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock VerticalAlignment="Center" Text="Welcome to Budget Tracker" Grid.ColumnSpan="2"/>
-                <Border CornerRadius="5" BorderThickness="1" BorderBrush="LightGray" Grid.Row="1" Width="Auto" Grid.ColumnSpan="2" Margin="20 0">
+                <Border CornerRadius="5" BorderThickness="1" BorderBrush="LightGray" Grid.Row="1" Width="Auto" Grid.ColumnSpan="2" Margin="20 10">
                     <TextBox  x:Name="NameTextBox" Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" md:HintAssist.HelperText="Enter Username or Email to login"  md:HintAssist.Hint="Username or Email" Text="{Binding UserName}">
                         <TextBox.InputBindings>
                             <KeyBinding Key="Return" Command="{Binding LoginCommand}"/>
@@ -47,7 +47,7 @@
                     </TextBox>
                 </Border>
 
-                <Border CornerRadius="5" BorderThickness="1" BorderBrush="LightGray" Grid.Row="3" Width="Auto" Grid.ColumnSpan="2" Margin="20 0">
+                <Border CornerRadius="5" BorderThickness="1" BorderBrush="LightGray" Grid.Row="2" Width="Auto" Grid.ColumnSpan="2" Margin="20 10">
                     <PasswordBox    md:HintAssist.HelperText="Enter Password"    md:HintAssist.Hint="Password"    md:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay}"    md:TextFieldAssist.HasClearButton="True"    Style="{StaticResource MaterialDesignRevealPasswordBox}" />
                 </Border>
                 <Button Content="SignUp" HorizontalAlignment="Center" Grid.Row="6" Command="{Binding SetupCommand}"/>
