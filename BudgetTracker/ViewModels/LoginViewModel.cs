@@ -102,23 +102,33 @@ namespace BudgetTracker.ViewModels
         /// <returns>Completed Task</returns>
         private async Task Login()
         {
-
-
-            if (await UserRepository.CheckUserExists(userName))
+            try
             {
-               if(await UserRepository.Login(UserName, Password))
+                if (await UserRepository.CheckUserExists(UserName))
                 {
-
+                    if (await UserRepository.Login(UserName, Password))
+                    {
+                        UserName = null;
+                        Password = null;
+                        RegionManager.RequestNavigate("ContentRegion", "HomeView");
+                    }
+                    else
+                    {
+                        Logger.Information("Login failed");
+                        SnackbarMessageQueue.Enqueue("Username or password incorrect");
+                    }
                 }
                 else
                 {
-                    SnackbarMessageQueue.Enqueue("Username or password incorrect");
+                    Logger.Information($"Login attempted for unregistered account {UserName}");
+                    SnackbarMessageQueue.Enqueue("No account for this user");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                SnackbarMessageQueue.Enqueue("No account for this user");
+                Logger.Error($"Exception thrown in {nameof(Login)}",ex);
             }
+            
         }
 
         /// <summary>

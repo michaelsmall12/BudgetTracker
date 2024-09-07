@@ -1,7 +1,9 @@
 ﻿using BudgetTracker.Entites;
 using BudgetTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Security.Cryptography;
 
 namespace BudgetTracker.Services.Services
 {
@@ -39,7 +41,8 @@ namespace BudgetTracker.Services.Services
             {
                 if (user == null) throw new ArgumentNullException(nameof(user));
                 logger.Information($"Adding new user {user}");
-                await dbContext.Users.AddAsync(user);
+                user.PasswordHash = HashPassword(user.PasswordHash);
+                dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync();
                 return true;
             }
@@ -129,15 +132,85 @@ namespace BudgetTracker.Services.Services
         {
             try
             {
-                var hashedPassword = User.HashPassword(password);
-                User.VerifyPassword(password, hashedPassword);
-                return await dbContext.Users.AnyAsync(x=>x.PasswordHash == hashedPassword && x.UserEmail == userName || x.UserName == userName);
-            }catch(Exception ex)
+                var user = await dbContext.Users.FirstOrDefaultAsync(x=>x.UserName == userName);
+                //var hashedPassword = HashPassword(password);
+                return VerifyPassword(user, password);
+                //return await dbContext.Users.AnyAsync(x => x.PasswordHash == hashedPassword && x.UserEmail == userName || x.UserName == userName);
+            }
+            catch (Exception ex)
             {
                 logger.Error($"Exception thrown in {nameof(Login)}", ex);
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Verifies the password of the user trying to login
+        /// </summary>
+        /// <param name="user">The user trying to login</param>
+        /// <param name="password">The password of the user trying to login</param>
+        /// <returns>bool indicating if the passsword is correct</returns>
+        public bool VerifyPassword(User user, string password)
+        {
+            return VerifyPasswordHash(password, user.PasswordHash);
+        }
+
+        /// <summary>
+        /// Hashes a password
+        /// </summary>
+        /// <param name="password">The password to hash</param>
+        /// <returns>The hashed password</returns>
+        private string HashPassword(string password)
+        {
+            var salt = GenerateSalt();
+            var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+            return $"{Convert.ToBase64String(salt)}:{hashed}";
+        }
+
+        /// <summary>
+        /// Verifies  a password hash matches the existing hash
+        /// </summary>
+        /// <param name="password">The passsword to hash</param>
+        /// <param name="storedHash">The stored hash to chech against</param>
+        /// <returns>bool inidcating if the passwords match</returns>
+        /// <exception cref="FormatException">Exception to be thrown if the hash doesnt match the expected format</exception>
+        private bool VerifyPasswordHash(string password, string storedHash)
+        {
+            var parts = storedHash.Split(':');
+            if (parts.Length != 2)
+                throw new FormatException("Unexpected hash format.");
+
+            var salt = Convert.FromBase64String(parts[0]);
+            var storedHashValue = parts[1];
+
+            var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            return hashed == storedHashValue;
+        }
+
+        /// <summary>
+        /// Generates the salt to be used in the password hashing
+        /// </summary>
+        /// <returns>The byte array for the salt</returns>
+        private byte[] GenerateSalt()
+        {
+            var salt = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+            return salt;
         }
     }
 }
