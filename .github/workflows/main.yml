@@ -20,22 +20,22 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0' # Specify the .NET version
+        dotnet-version: '6.0' 
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./BudgetTracker.sln
 
     - name: Build the project
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build ./BudgetTracker.sln --no-restore --configuration Release 
 
     - name: Run tests
-      run: dotnet test --no-restore --verbosity normal --configuration Release
+      run: dotnet test ./BudgetTracker.sln --no-restore --verbosity normal --configuration Release 
 
     - name: Collect Code Coverage
-      run: dotnet test --collect:"XPlat Code Coverage"
+      run: dotnet test ./BudgetTracker.sln --collect:"XPlat Code Coverage"
 
     - name: Report Code Coverage
       uses: actions/upload-artifact@v3
       with:
         name: code-coverage-report
-        path: $(Agent.TempDirectory)/TestResults/**/*.xml
+        path: '**/TestResults/**/*.xml'
