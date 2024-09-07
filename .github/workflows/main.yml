@@ -23,16 +23,16 @@ jobs:
         dotnet-version: '6.0' 
 
     - name: Restore dependencies
-      run: dotnet restore ./BudgetTracker.Entites.sln
+      run: dotnet restore ./BudgetTracker.Entites/BudgetTracker.Entites.sln
 
     - name: Build the project
-      run: dotnet build ./BudgetTracker.Entites.sln --no-restore --configuration Release 
+      run: dotnet build ./BudgetTracker.Entites/BudgetTracker.Entites.sln --no-restore --configuration Release 
 
     - name: Run tests
-      run: dotnet test ./BudgetTracker.Entites.sln --no-restore --verbosity normal --configuration Release 
+      run: dotnet test ./BudgetTracker.Entites/BudgetTracker.Entites.sln --no-restore --verbosity normal --configuration Release 
 
     - name: Collect Code Coverage
-      run: dotnet test ./BudgetTracker.Entites.sln --collect:"XPlat Code Coverage"
+      run: dotnet test ./BudgetTracker.Entites/BudgetTracker.Entites.sln --collect:"XPlat Code Coverage"
 
     - name: Report Code Coverage
       uses: actions/upload-artifact@v3
