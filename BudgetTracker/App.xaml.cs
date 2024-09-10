@@ -53,6 +53,7 @@ namespace BudgetTracker
             containerRegistry.RegisterSingleton<IUserRepository, UserRepository>();
             containerRegistry.RegisterSingleton<ISnackbarMessageQueue, SnackbarMessageQueue>();
             containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
+            containerRegistry.RegisterForNavigation<SignupView, SignupViewModel>();
         }
     }
 }
