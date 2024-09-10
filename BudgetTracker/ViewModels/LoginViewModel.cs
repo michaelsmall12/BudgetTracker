@@ -104,7 +104,7 @@ namespace BudgetTracker.ViewModels
         {
             try
             {
-                if (await UserRepository.CheckUserExists(UserName))
+                if (await UserRepository.CheckUserExists(UserName,UserName))
                 {
                     if (await UserRepository.Login(UserName, Password))
                     {

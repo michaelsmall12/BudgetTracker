@@ -17,12 +17,12 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".7*"/>
-            <ColumnDefinition Width="*" MinWidth="300"/>
+            <ColumnDefinition Width="*" MinWidth="300" MaxWidth="600"/>
             <ColumnDefinition Width=".7*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height=".6*"/>
-            <RowDefinition Height="*" MinHeight="200" />
+            <RowDefinition Height="*" MinHeight="200" MaxHeight="400"/>
             <RowDefinition Height=".6*"/>
         </Grid.RowDefinitions>
         <md:Card Grid.Row="1" Grid.Column="1" >
@@ -50,8 +50,8 @@
                 <Border CornerRadius="5" BorderThickness="1" BorderBrush="LightGray" Grid.Row="2" Width="Auto" Grid.ColumnSpan="2" Margin="20 10">
                     <PasswordBox    md:HintAssist.HelperText="Enter Password"    md:HintAssist.Hint="Password"    md:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay}"    md:TextFieldAssist.HasClearButton="True"    Style="{StaticResource MaterialDesignRevealPasswordBox}" />
                 </Border>
-                <Button Content="SignUp" HorizontalAlignment="Center" Grid.Row="6" Command="{Binding SetupCommand}"/>
-                <Button Content="Login" HorizontalAlignment="Center" Grid.Row="6" Grid.Column="1" Command="{Binding LoginCommand}"/>
+                <Button Content="SignUp" HorizontalAlignment="Center" Grid.Row="6" Command="{Binding SetupCommand}" Width="100"/>
+                <Button Content="Login" HorizontalAlignment="Center" Grid.Row="6" Grid.Column="1" Command="{Binding LoginCommand}" Width="100"/>
 
                 
             </Grid>

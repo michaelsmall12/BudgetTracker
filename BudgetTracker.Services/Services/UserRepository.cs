@@ -57,15 +57,16 @@ namespace BudgetTracker.Services.Services
         /// <summary>
         /// Updates a user in the database
         /// </summary>
-        /// <param name="user">The user to update</param>
+        /// <param name="username">The usename to update</param>
+        /// <param name="email">The email to check</param>
         /// <returns>bool indicating if the update was successful</returns>
-        public async Task<bool> CheckUserExists(string username)
+        public async Task<bool> CheckUserExists(string username, string email)
         {
             try
             {
-                if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email)) throw new ArgumentNullException(nameof(username));
                 logger.Information($"Checking user exists {username}");
-                return await dbContext.Users.AnyAsync(x => x.UserName == username);
+                return await dbContext.Users.AnyAsync(x => x.UserName == username || x.UserEmail == email);
             }
             catch (Exception ex)
             {
