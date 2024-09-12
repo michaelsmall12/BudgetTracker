@@ -40,9 +40,14 @@ namespace BudgetTracker.Entites
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         /// <summary>
-        /// Hashes the password string
+        /// Gets or sets the income stream for the user
         /// </summary>
-        /// <param name="password"></param>
+        public List<IncomeStream> IncomeStreams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the outgoing streams
+        /// </summary>
+        public List<OutGoings> Outgoings { get; set; }
         
     }
 }

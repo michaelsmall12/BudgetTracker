@@ -68,6 +68,7 @@ namespace BudgetTracker.ViewModels
 
         public ISnackbarMessageQueue SnackbarMessageQueue { get;set;}
 
+        public ICoreService CoreService {  get;set;}
         public ILogger Logger { get;set;}
         /// <summary>
         /// Constructor for the LoginViewModel
@@ -76,12 +77,13 @@ namespace BudgetTracker.ViewModels
         /// <param name="regionManager">The region manager to be used in the LoginViewModel</param>
         /// <param name="snackbarMessageQueue">"The Snackbar Message Queue to be used in the LoginViewMode</param>
         /// <param name="logger">"The logger to be used in the LoginViewMode</param>
-        public LoginViewModel(IRegionManager regionManager, IUserRepository userRepository, ISnackbarMessageQueue snackbarMessageQueue, ILogger logger) 
+        public LoginViewModel(IRegionManager regionManager, IUserRepository userRepository, ISnackbarMessageQueue snackbarMessageQueue, ILogger logger, ICoreService coreService) 
         {
             RegionManager = regionManager;
             UserRepository = userRepository;
             SnackbarMessageQueue = snackbarMessageQueue;
             Logger = logger;
+            CoreService = coreService;
             LoginCommand = new DelegateCommand(async () => await Login());
             SetupCommand = new DelegateCommand(async () => await Setup());
         }
@@ -106,10 +108,12 @@ namespace BudgetTracker.ViewModels
             {
                 if (await UserRepository.CheckUserExists(UserName,UserName))
                 {
-                    if (await UserRepository.Login(UserName, Password))
+                    var result = await UserRepository.Login(UserName, Password);
+                    if (result.Item1)
                     {
                         UserName = null;
                         Password = null;
+                        CoreService.ActiverUser = result.Item2;
                         RegionManager.RequestNavigate("ContentRegion", "HomeView");
                     }
                     else

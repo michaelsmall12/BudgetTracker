@@ -129,13 +129,13 @@ namespace BudgetTracker.Services.Services
         /// <param name="userName">The username to try and log in</param>
         /// <param name="password">The password to try log in</param>
         /// <returns>bool indicating if the login was successfull</returns>
-        public async Task<bool> Login(string userName, string password)
+        public async Task<Tuple<bool,User>> Login(string userName, string password)
         {
             try
             {
                 var user = await dbContext.Users.FirstOrDefaultAsync(x=>x.UserName == userName);
                 //var hashedPassword = HashPassword(password);
-                return VerifyPassword(user, password);
+                return Tuple.Create(VerifyPassword(user, password), user);
                 //return await dbContext.Users.AnyAsync(x => x.PasswordHash == hashedPassword && x.UserEmail == userName || x.UserName == userName);
             }
             catch (Exception ex)
@@ -143,7 +143,7 @@ namespace BudgetTracker.Services.Services
                 logger.Error($"Exception thrown in {nameof(Login)}", ex);
             }
 
-            return false;
+            return Tuple.Create(false,new User());
         }
 
         /// <summary>

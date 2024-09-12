@@ -39,6 +39,6 @@ namespace BudgetTracker.Services.Interfaces
         /// <param name="userName">The username to try and log in</param>
         /// <param name="password">The password to try log in</param>
         /// <returns>bool indicating if the login was successfull</returns>
-        Task<bool> Login(string userName, string password);
+        Task<Tuple<bool,User>> Login(string userName, string password);
     }
 }
